@@ -8,10 +8,17 @@ function(SetVersion version majver minver patchver tweakver prerel)
   if(EXISTS ${CMAKE_SOURCE_DIR}/.git AND Git_FOUND)
     # Read version from the project's VCS and store the result
     # into version.
+    # TODO: this should be done in a more readable way, but for now we have an issue with version if there are no tags.
     execute_process(
       COMMAND ${GIT_EXECUTABLE} describe
       WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
-      OUTPUT_VARIABLE vcs_tag)
+      OUTPUT_VARIABLE vcs_tag
+      ERROR_VARIABLE vcs_tag_err
+    )
+    if(NOT ${vcs_tag_err} STREQUAL "")
+      set(vcs_tag "v2.1.0-beta3-0-g0000000")
+      message(STATUS "[SetVersion] No VCS found, use default version: ${vcs_tag}")
+    endif ()
     string(STRIP "${vcs_tag}" vcs_tag)
     message(STATUS "[SetVersion] Reading version from VCS: ${vcs_tag}")
   else()
