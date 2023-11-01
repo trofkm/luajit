@@ -25,3 +25,12 @@ luajit-parse-memprof
 luajit-parse-sysprof
 luajit.pc
 *.c_test
+
+# build
+cmake-build-*
+build
+
+# IDE
+.idea
+.vscode
+.vs
